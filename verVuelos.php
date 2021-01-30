@@ -48,6 +48,7 @@ if (isset($resultado) && $resultado) {
       $vuelo["hora"] =$entry["hora"];
       $vuelo["plazas_totales"] =$entry["plazas_totales"];
       $vuelo["plazas_disponibles"] =$entry["plazas_disponibles"];
+      $vuelo["precio"] = $entry["precio"];
       $arrayVuelos[] = $vuelo;
 
     }

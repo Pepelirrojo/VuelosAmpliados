@@ -17,6 +17,7 @@ $datosViajero = array();
 
 $plazasTotales = 0;
 $plazasDisponibles = 0;
+$precioBillete = 0;
 
 if (isset($parameters)) {
   $jsonRecibido = json_decode($parameters, true);
@@ -38,6 +39,7 @@ if (isset($parameters)) {
     $arrayInfo["hora"] = $entry['hora'];
     $plazasTotales = $entry['plazas_totales'];
     $plazasDisponibles = $entry['plazas_disponibles'];
+    $precioBillete = $entry['precio'];
   }
   $arrayInfo["dniPagador"] = $dniPagador;
   $arrayInfo["tarjeta"] = $tarjeta;
@@ -91,7 +93,9 @@ function getCodigoVenta($n) {
 }
 
     $pasajero = array();
+
     $pasajero["asiento"] = $asiento;
+
     $pasajero["dni"] = $viajero["dni"];
     $pasajero["apellido"] = $viajero["apellido"];
     $pasajero["nombre"] = $viajero["nombre"];
@@ -109,9 +113,18 @@ function getCodigoVenta($n) {
         array('$set' => array("plazas_disponibles" => $aux))
       );
 
+//Se crea un Json nuevo para enviar los datos solicitados en el Protocolo
+    $pasajeroJsonEnviar = array();
+$pasajeroJsonEnviar["asiento"] = $asiento;
+$pasajeroJsonEnviar["dni"] = $viajero["dni"];
+$pasajeroJsonEnviar["nombre"] = $viajero["nombre"];
+$pasajeroJsonEnviar["apellido"] = $viajero["apellido"];
+$pasajeroJsonEnviar["costeBillete"] = $precioBillete;
+
+
    }
 
-   $arrayInfo["datosBillete"] = $datosBillete;
+   $arrayInfo["datosBillete"] = $pasajeroJsonEnviar;
 
 $mensajeJSON = json_encode($arrayInfo, JSON_PRETTY_PRINT);
 echo $mensajeJSON;
